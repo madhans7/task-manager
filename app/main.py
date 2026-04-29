@@ -91,7 +91,7 @@ def all_updates():
     updates = TaskUpdate.query.order_by(TaskUpdate.created_at.desc()).paginate(page=page, per_page=10)
     return render_template('all_updates.html', updates=updates)
 
-@main_bp.route('/profile')
+@main_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     """User profile page"""

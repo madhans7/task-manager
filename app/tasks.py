@@ -99,18 +99,21 @@ def rate_task(task_id):
     
     # Cannot rate own task
     if task.assigned_to == current_user.id:
-        return {'error': 'Cannot rate your own task'}, 403
+        flash('Cannot rate your own task', 'danger')
+        return redirect(url_for('main.task_detail', task_id=task_id))
     
     # Check if already rated
     existing_rating = Rating.query.filter_by(task_id=task_id, rater_id=current_user.id).first()
     if existing_rating:
-        return {'error': 'You have already rated this task'}, 400
+        flash('You have already rated this task', 'warning')
+        return redirect(url_for('main.task_detail', task_id=task_id))
     
     try:
         stars = request.form.get('stars', type=int)
         
-        if stars < 1 or stars > 5:
-            return {'error': 'Rating must be between 1 and 5'}, 400
+        if stars is None or stars < 1 or stars > 5:
+            flash('Rating must be between 1 and 5', 'danger')
+            return redirect(url_for('main.task_detail', task_id=task_id))
         
         rating = Rating(
             task_id=task_id,
@@ -126,10 +129,12 @@ def rate_task(task_id):
         employee = Employee.query.get(task.assigned_to)
         send_rating_notification_email(employee, current_user, task, rating)
         
-        return {'message': 'Rating submitted successfully!'}, 200
+        flash('Rating submitted successfully!', 'success')
+        return redirect(url_for('main.task_detail', task_id=task_id))
     except Exception as e:
         db.session.rollback()
-        return {'error': str(e)}, 500
+        flash(f'Error submitting rating: {str(e)}', 'danger')
+        return redirect(url_for('main.task_detail', task_id=task_id))
 
 @tasks_bp.route('/employee/<int:employee_id>/flag', methods=['POST'])
 @login_required
