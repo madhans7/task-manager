@@ -1,0 +1,18 @@
+Hi {{ employee.get_full_name() }},
+
+A new task has been assigned to you on the Task Manager platform.
+
+Task Details:
+- Title: {{ task.title }}
+- Priority: {{ task.priority.upper() }}
+- Due Date: {{ task.due_date.strftime('%Y-%m-%d') if task.due_date else 'Not set' }}
+
+Description:
+{{ task.description }}
+
+Please log in to the Task Manager platform to view the complete task details and submit your progress updates.
+
+Link: {{ task.get_view_url() if task.get_view_url else 'http://localhost:5000' }}
+
+Best regards,
+Task Manager System

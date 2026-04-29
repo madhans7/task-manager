@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #007bff; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+        .content { margin: 20px 0; }
+        .footer { background-color: #f8f9fa; padding: 15px; text-align: center; border-radius: 5px; margin-top: 20px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>New Task Assigned</h2>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ employee.get_full_name() }},</p>
+
+            <p>A new task has been assigned to you on the Task Manager platform.</p>
+
+            <h4>Task Details:</h4>
+            <ul>
+                <li><strong>Title:</strong> {{ task.title }}</li>
+                <li><strong>Priority:</strong> {{ task.priority.upper() }}</li>
+                <li><strong>Due Date:</strong> {{ task.due_date.strftime('%Y-%m-%d') if task.due_date else 'Not set' }}</li>
+            </ul>
+
+            <h4>Description:</h4>
+            <p>{{ task.description }}</p>
+
+            <p>Please log in to the Task Manager platform to view the complete task details and submit your progress updates.</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Task Manager. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

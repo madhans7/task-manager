@@ -1,0 +1,15 @@
+Hi {{ employee.get_full_name() }},
+
+{{ rater.get_full_name() }} has given you a rating for the task "{{ task.title }}".
+
+Rating: {% for i in range(rating.stars) %}⭐{% endfor %} ({{ rating.stars }}/5)
+
+{% if rating.comment %}
+Comment:
+{{ rating.comment }}
+{% endif %}
+
+Keep up the great work!
+
+Best regards,
+Task Manager System

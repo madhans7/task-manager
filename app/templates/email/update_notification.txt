@@ -1,0 +1,16 @@
+Hi {{ manager.get_full_name() }},
+
+{{ employee.get_full_name() }} has submitted an update for the task "{{ task.title }}".
+
+Update Details:
+- Progress: {{ update.progress_percentage }}%
+- Status: {{ update.status.upper() }}
+- Time: {{ update.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+
+Update Message:
+{{ update.update_text }}
+
+Please log in to the Task Manager platform to review the update and provide feedback if needed.
+
+Best regards,
+Task Manager System

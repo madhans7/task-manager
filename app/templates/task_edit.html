@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Task - Task Manager{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit"></i> Edit Task
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.title.label(class="form-label") }}
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control is-invalid") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.title.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.title(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control is-invalid", rows="5") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.description.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.description(class="form-control", rows="5") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.assigned_to.label(class="form-label") }}
+                                {% if form.assigned_to.errors %}
+                                    {{ form.assigned_to(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.assigned_to.errors %}
+                                            {{ error }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.assigned_to(class="form-select") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                {{ form.priority.label(class="form-label") }}
+                                {% if form.priority.errors %}
+                                    {{ form.priority(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.priority.errors %}
+                                            {{ error }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.priority(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.due_date.label(class="form-label") }}
+                            {% if form.due_date.errors %}
+                                {{ form.due_date(class="form-control is-invalid", type="date") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.due_date.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.due_date(class="form-control", type="date") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            {{ form.submit(value="Update Task", _class="btn btn-primary") }}
+                            <a href="{{ url_for('main.task_detail', task_id=task.id) }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

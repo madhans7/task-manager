@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Employees - Task Manager{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">
+        <i class="fas fa-users"></i> Employees
+    </h2>
+
+    {% if employee_stats %}
+        <div class="row">
+            {% for item in employee_stats %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.employee.get_full_name() }}</h5>
+                        <p class="card-subtitle mb-2 text-muted">@{{ item.employee.username }}</p>
+                        <p>
+                            <strong>Email:</strong> {{ item.employee.email }}<br>
+                            <strong>Total Tasks Assigned:</strong> {{ item.tasks }}<br>
+                            {{ item.average_rating }}/5<br>
+                            <strong>Red Flags:</strong> 
+                            <span id="flags-{{ item.employee.id }}">
+                                {% for i in range(item.employee.red_flags) %}
+                                    <i class="fas fa-flag text-danger"></i>
+                                {% endfor %}
+                                ({{ item.employee.red_flags }}/7)
+                            </span>
+                        </p>
+                        <button class="btn btn-sm btn-danger" onclick="addFlag({{ item.employee.id }})">
+                            <i class="fas fa-flag"></i> Add Red Flag
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No employees found.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

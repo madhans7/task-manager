@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #28a745; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+        .content { margin: 20px 0; }
+        .update-box { background-color: #f8f9fa; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0; }
+        .footer { background-color: #f8f9fa; padding: 15px; text-align: center; border-radius: 5px; margin-top: 20px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Task Update Notification</h2>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ manager.get_full_name() }},</p>
+
+            <p>{{ employee.get_full_name() }} has submitted an update for the task <strong>"{{ task.title }}"</strong>.</p>
+
+            <div class="update-box">
+                <p><strong>Progress:</strong> {{ update.progress_percentage }}%</p>
+                <p><strong>Status:</strong> {{ update.status.replace('_', ' ').upper() }}</p>
+                <p><strong>Time:</strong> {{ update.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+
+            <h4>Update Message:</h4>
+            <p>{{ update.update_text }}</p>
+
+            <p>Please log in to the Task Manager platform to review the update and provide feedback if needed.</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Task Manager. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

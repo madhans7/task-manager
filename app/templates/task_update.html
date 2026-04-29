@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Update Task - Task Manager{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit"></i> Update Task: {{ task.title }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <!-- Update text removed -->
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.progress_percentage.label(class="form-label") }}
+                                <div class="input-group">
+                                    {% if form.progress_percentage.errors %}
+                                        {{ form.progress_percentage(class="form-control is-invalid") }}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.progress_percentage.errors %}
+                                                {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.progress_percentage(class="form-control") }}
+                                    {% endif %}
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                {{ form.status.label(class="form-label") }}
+                                {% if form.status.errors %}
+                                    {{ form.status(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.status.errors %}
+                                            {{ error }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.status(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('main.task_detail', task_id=task.id) }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

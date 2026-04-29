@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #ffc107; color: #333; padding: 20px; text-align: center; border-radius: 5px; }
+        .content { margin: 20px 0; }
+        .rating-box { background-color: #f8f9fa; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0; text-align: center; }
+        .stars { font-size: 24px; color: #ffc107; }
+        .footer { background-color: #f8f9fa; padding: 15px; text-align: center; border-radius: 5px; margin-top: 20px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>New Rating Received!</h2>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ employee.get_full_name() }},</p>
+
+            <p>{{ rater.get_full_name() }} has given you a rating for the task <strong>"{{ task.title }}"</strong>.</p>
+
+            <div class="rating-box">
+                <div class="stars">
+                    {% for i in range(rating.stars) %}⭐{% endfor %}
+                </div>
+                <p><strong>{{ rating.stars }}/5 Stars</strong></p>
+            </div>
+
+            {% if rating.comment %}
+            <h4>Comment:</h4>
+            <p>{{ rating.comment }}</p>
+            {% endif %}
+
+            <p>Keep up the great work!</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Task Manager. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
