@@ -4,7 +4,8 @@ from datetime import timedelta
 class Config:
     """Base configuration class"""
     # Database
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///task_manager.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join('/tmp' if os.environ.get('VERCEL') else os.path.dirname(os.path.abspath(__file__)), 'task_manager.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session
