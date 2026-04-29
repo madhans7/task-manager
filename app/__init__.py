@@ -14,6 +14,10 @@ def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
     
+    # Configure proxy for Vercel
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    
     # Initialize extensions
     db.init_app(app)
     login_manager.init_app(app)
@@ -35,6 +39,15 @@ def create_app(config_class=DevelopmentConfig):
     # Create database tables
     with app.app_context():
         try:
+            import os
+            if os.environ.get('VERCEL'):
+                db_path = os.path.join('/tmp', 'task_manager.db')
+                if not os.path.exists(db_path):
+                    import shutil
+                    # Copy bundled DB to /tmp
+                    bundled_db = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'task_manager.db')
+                    if os.path.exists(bundled_db):
+                        shutil.copy2(bundled_db, db_path)
             db.create_all()
         except Exception as e:
             print(f"Error creating database: {e}")
