@@ -67,7 +67,7 @@ def submit_update(task_id):
             update = TaskUpdate(
                 task_id=task_id,
                 employee_id=current_user.id,
-                update_text=None, # Message removed
+                update_text=form.update_text.data,
                 progress_percentage=form.progress_percentage.data,
                 status=form.status.data
             )
@@ -235,16 +235,10 @@ def search_tasks():
     query = request.args.get('q', '', type=str)
     page = request.args.get('page', 1, type=int)
     
-    if current_user.is_manager:
-        tasks = Task.query.filter(
-            (Task.title.ilike(f'%{query}%')) | 
-            (Task.description.ilike(f'%{query}%'))
-        ).paginate(page=page, per_page=10)
-    else:
-        tasks = Task.query.filter(
-            (Task.assigned_to == current_user.id) &
-            ((Task.title.ilike(f'%{query}%')) | 
-             (Task.description.ilike(f'%{query}%')))
-        ).paginate(page=page, per_page=10)
+    # Everyone can search all tasks
+    tasks = Task.query.filter(
+        (Task.title.ilike(f'%{query}%')) | 
+        (Task.description.ilike(f'%{query}%'))
+    ).paginate(page=page, per_page=10)
     
     return render_template('search_results.html', tasks=tasks, query=query)

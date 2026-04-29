@@ -24,8 +24,9 @@
                     {{ update.created_at.strftime('%Y-%m-%d %H:%M') }}
                 </p>
                 
+                {% if update.update_text %}
                 <p class="card-text">{{ update.update_text[:300] }}{% if update.update_text|length > 300 %}...{% endif %}</p>
-                
+                {% endif %}                
                 <div class="mb-2">
                     <small class="text-muted">Progress: {{ update.progress_percentage }}%</small>
                     <div class="progress" style="height: 15px;">

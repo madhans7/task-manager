@@ -15,14 +15,26 @@ def dashboard():
     """Main dashboard"""
     page = request.args.get('page', 1, type=int)
     
-    # Everyone sees all tasks
-    tasks = Task.query.paginate(page=page, per_page=10)
+    # For managers, see all tasks and all interns
+    if current_user.is_manager:
+        tasks = Task.query.paginate(page=page, per_page=10)
+        interns = Employee.query.filter_by(is_manager=False).all()
+    else:
+        # Interns see only their assigned tasks
+        tasks = Task.query.filter_by(assigned_to=current_user.id).paginate(page=page, per_page=10)
+        interns = []
     
     # Get task statistics
-    total_tasks = Task.query.count()
-    pending_tasks = Task.query.filter_by(status='pending').count()
-    in_progress = Task.query.filter_by(status='in_progress').count()
-    completed = Task.query.filter_by(status='completed').count()
+    if current_user.is_manager:
+        total_tasks = Task.query.count()
+        pending_tasks = Task.query.filter_by(status='pending').count()
+        in_progress = Task.query.filter_by(status='in_progress').count()
+        completed = Task.query.filter_by(status='completed').count()
+    else:
+        total_tasks = Task.query.filter_by(assigned_to=current_user.id).count()
+        pending_tasks = Task.query.filter_by(assigned_to=current_user.id, status='pending').count()
+        in_progress = Task.query.filter_by(assigned_to=current_user.id, status='in_progress').count()
+        completed = Task.query.filter_by(assigned_to=current_user.id, status='completed').count()
     
     stats = {
         'total': total_tasks,
@@ -31,7 +43,15 @@ def dashboard():
         'completed': completed
     }
     
-    return render_template('dashboard.html', tasks=tasks, stats=stats)
+    return render_template('dashboard.html', tasks=tasks, stats=stats, interns=interns)
+
+@main_bp.route('/all-tasks')
+@login_required
+def all_tasks():
+    """View all tasks (visible to everyone)"""
+    page = request.args.get('page', 1, type=int)
+    tasks = Task.query.paginate(page=page, per_page=10)
+    return render_template('all_tasks.html', tasks=tasks)
 
 @main_bp.route('/task/<int:task_id>')
 @login_required

@@ -45,6 +45,7 @@ class CreateTaskForm(FlaskForm):
 
 class TaskUpdateForm(FlaskForm):
     """Form to submit task updates"""
+    update_text = TextAreaField('Comment', validators=[Length(max=500)])
     progress_percentage = IntegerField('Progress %', validators=[DataRequired()], render_kw={"min": 0, "max": 100})
     status = SelectField('Status', choices=[
         ('pending', 'Pending'),

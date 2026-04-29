@@ -97,6 +97,49 @@
         </div>
     </div>
 
+    {% if current_user.is_manager and interns %}
+    <!-- Interns List -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-users"></i> Interns
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Red Flags</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for intern in interns %}
+                        <tr>
+                            <td><strong>{{ intern.get_full_name() }}</strong></td>
+                            <td>{{ intern.email }}</td>
+                            <td>
+                                <span class="badge bg-{% if intern.red_flags > 4 %}danger{% elif intern.red_flags > 0 %}warning{% else %}success{% endif %}">
+                                    {{ intern.red_flags }}/7
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('tasks.create_task') }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-plus"></i> Assign Task
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Tasks List -->
     <div class="card">
         <div class="card-header bg-light">
